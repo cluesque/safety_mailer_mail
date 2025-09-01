@@ -8,6 +8,7 @@
 # Set environment variables GMAIL_USERNAME and GMAIL_PASSWORD before running.
 require 'mail'
 require 'safety_mailer'
+require 'logger'
 
 recipient = ARGV[0] || "bob@example.net"
 subject = "At the tone the time will be #{Time.now.strftime("%I:%M %p")}"
@@ -23,6 +24,7 @@ Mail.defaults do
   delivery_method SafetyMailer::Carrier, {
     allowed_matchers: [ /\+safety_mailer@/, /@mydomain\.com$/ ],
     delivery_method: :smtp,
+    logger: Logger.new($stdout),
     delivery_method_settings: {
       address:              "smtp.gmail.com",
       port:                 587,
