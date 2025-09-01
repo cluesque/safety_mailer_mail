@@ -1,0 +1,40 @@
+#!/usr/bin/env ruby
+
+# Very simple demonstration of sending an email with the 'mail' gem.
+# Usage:
+#   ruby mail_the_time.rb [recipient_email_address]
+
+# Requires a Gmail account with "Allow less secure apps" enabled.
+# Set environment variables GMAIL_USERNAME and GMAIL_PASSWORD before running.
+require 'mail'
+
+recipient = ARGV[0] || "bob@example.net"
+subject = "At the tone the time will be #{Time.now.strftime("%I:%M %p")}"
+body = <<-EOBODY
+Hello from safety_mailer_mail
+
+At the tone the time will be #{Time.now.strftime("%I:%M %p")}
+
+Have a great day!
+EOBODY
+
+Mail.defaults do
+  delivery_method :smtp,
+    address:              "smtp.gmail.com",
+    port:                 587,
+    # domain:               "gmail.com",
+    user_name:            ENV["GMAIL_USERNAME"],
+    password:             ENV["GMAIL_PASSWORD"],
+    authentication:       :plain,
+    enable_starttls_auto: true
+end
+
+mail = Mail.new do
+  from     ENV["GMAIL_USERNAME"]
+  to       recipient
+  subject  subject
+  body     body
+end
+
+puts "Sending email to #{recipient} with subject '#{subject}'"
+mail.deliver!
