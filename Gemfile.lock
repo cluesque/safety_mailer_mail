@@ -17,6 +17,7 @@ GEM
       timeout
     net-smtp (0.5.1)
       net-protocol
+    safety_mailer (0.1.0)
     timeout (0.4.3)
 
 PLATFORMS
@@ -25,6 +26,7 @@ PLATFORMS
 
 DEPENDENCIES
   mail
+  safety_mailer
 
 BUNDLED WITH
    2.6.9
